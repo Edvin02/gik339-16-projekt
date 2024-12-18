@@ -13,7 +13,10 @@ CREATE TABLE IF NOT EXISTS cars (
 )
 ''')
 
-cursor.execute('INSERT INTO cars (id, brand, year, regnr, color) VALUES (?, ?, ?, ?, ?)', (1, 'Ferarri', 2020, 'ABC123', 'red'))
+cursor.execute('INSERT INTO cars (brand, year, regnr, color) VALUES (?, ?, ?, ?)', ('Ferarri', 2020, 'ABC123', 'red'))
+cursor.execute('INSERT INTO cars (brand, year, regnr, color) VALUES (?, ?, ?, ?)', ('Volvo', 2015, 'AHL876', 'black'))
+cursor.execute('INSERT INTO cars (brand, year, regnr, color) VALUES (?, ?, ?, ?)', ('Tesla', 2021, 'XYZ123', 'white'))
+
 
 connection.commit()
 connection.close()
