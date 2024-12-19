@@ -34,6 +34,29 @@ server.get("/cars", (req, res) => {
   db.close();
 });
 
+//put
+server.put('/cars/:id', (req, res) => {
+  const db = new sqlite3.Database("./cars.db");
+  const { brand, year, regnr, color } = req.body;
+  const { id } = req.params;
+
+  const sql = "UPDATE cars SET brand = ?, year = ?, regnr = ?, color = ? WHERE id = ?";
+
+  db.run(sql, [brand, year, regnr, color, id], function (err) {
+    if (err) {
+      db.close();
+      return res
+        .status(500)
+        .send({ error: "Database error", details: err.message });
+    }
+    
+    db.close();
+    res.send({ 
+      message: "Car updated successfully",
+      updatedCar: { id, brand, year, regnr, color }
+    });
+  });
+});
 //post
 server.post("/cars", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
@@ -55,7 +78,7 @@ server.post("/cars", (req, res) => {
     }
 
     res.status(201).send({
-      message: "Woohoo bilen har lagts tills!",
+      message: "Woohoo bilen har lagts till!",
       car: { id: this.lastID, brand, year, regnr, color },
     });
   });
