@@ -4,7 +4,7 @@ const formHtml = document.getElementById("carForm");
 const serverUrl = "http://localhost:3000/cars";
 
 // Hämta data från servern med fetch
-async function fetchCrads() {
+async function fetchcars() {
   const response = await fetch(serverUrl);
   const cars = await response.json();
 
@@ -68,14 +68,17 @@ function showMessage(message,Type= "success"){
     messageBox.className= `Alert alert-$(type)`;
     messageBox.classList.remove("d-none")
     setTimeout(()=> messageBox.classList.add("d-none"),3000);
+
 }
+
+ });
 
 //Funktion för att ta bort 
 li.addEventListener("click", async(e)=> {
     const target= e.target;
     const carId= target.closest("li").dataset.id;
 
-
+ });
 if (target.classList.container("del-btn")){
     const response = await fetch(`${serverUrl}/carId`)
     const car = await response.json();
@@ -83,15 +86,24 @@ if (target.classList.container("del-btn")){
     document.getElementById("brand").value = car.brand;
     document.getElementById("year").value = car.year;
     document.getElementById("color").value = car.color;
+    else if(target.classList.container("delete-btn")){
+         try {
+    const response = await fetch(carId ? `${serverUrl}/${carID}` : serverUrl, { method:"DELETE"});
+    const result = await response.json;
 
-
+   
+showMessage( result, message);
+fetchcars();
+         }
+catch(error){
+    showMessage("Error deleting car")
 }
+ 
 
 
 
-
-
-
+   
+ 
 
 
 });
