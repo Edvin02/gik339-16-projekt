@@ -35,12 +35,13 @@ server.get("/cars", (req, res) => {
 });
 
 //put
-server.put('/cars/:id', (req, res) => {
+server.put("/cars/:id", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
   const { brand, year, regnr, color } = req.body;
   const { id } = req.params;
 
-  const sql = "UPDATE cars SET brand = ?, year = ?, regnr = ?, color = ? WHERE id = ?";
+  const sql =
+    "UPDATE cars SET brand = ?, year = ?, regnr = ?, color = ? WHERE id = ?";
 
   db.run(sql, [brand, year, regnr, color, id], function (err) {
     if (err) {
@@ -49,11 +50,11 @@ server.put('/cars/:id', (req, res) => {
         .status(500)
         .send({ error: "Database error", details: err.message });
     }
-    
+
     db.close();
-    res.send({ 
+    res.send({
       message: "Car updated successfully",
-      updatedCar: { id, brand, year, regnr, color }
+      updatedCar: { id, brand, year, regnr, color },
     });
   });
 });
@@ -64,7 +65,7 @@ server.post("/cars", (req, res) => {
   const { brand, year, regnr, color } = req.body;
 
   if (!brand || !year || !regnr || !color) {
-    return res.status(400).send({ error: "Alla fält måste fyllas" });
+    return res.status(400).send({ error: "Alla fält måste fyllas i" });
   }
 
   const sql =
