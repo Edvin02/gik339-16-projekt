@@ -65,7 +65,7 @@ server.post("/cars", (req, res) => {
   const { brand, year, regnr, color } = req.body;
 
   if (!brand || !year || !regnr || !color) {
-    return res.status(400).send({ error: "Alla fält måste fyllas i" });
+    return res.status(400).send({ error: "Alla fält måste fyllas" });
   }
 
   const sql =
@@ -81,6 +81,37 @@ server.post("/cars", (req, res) => {
     res.status(201).send({
       message: "Woohoo bilen har lagts till!",
       car: { id: this.lastID, brand, year, regnr, color },
+    });
+  });
+
+  db.close();
+});
+
+server.delete("/cars/:id", (req, res) => {
+  const db = new sqlite3.Database("./cars.db");
+  const { id } = req.params;
+  if (!id) {
+    return res
+      .status(500)
+      .send({ error: "ID är obligatoriskt för att ta bort en resurs." });
+  }
+
+  const sql = "DELETE FROM cars WHERE id = ?";
+
+  db.run(sql, [id], function (err) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ error: "Database error", details: err.message });
+    }
+    if (this.changes === 0) {
+      return res
+        .status(404)
+        .send({ error: "Resurs med angivet ID hittades inte." });
+    }
+
+    res.status(200).send({
+      message: `Resurs med ID ${id} har tagits bort.`,
     });
   });
 
