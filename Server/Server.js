@@ -1,25 +1,20 @@
 const express = require("express");
+const sqlite3 = require("sqlite3").verbose();
 
 const server = express();
 
-const sqlite3 = require("sqlite3").verbose();
-
 server
   .use(express.json())
-
   .use(express.urlencoded({ extended: false }))
-
   .use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
     res.header("Access-Control-Allow-Methods", "*");
-
     next();
   });
 
 server.get("/cars", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
-
   const sql = "SELECT * FROM cars";
 
   db.all(sql, (err, rows) => {
@@ -28,13 +23,12 @@ server.get("/cars", (req, res) => {
         .status(500)
         .send({ error: "Database error", details: err.message });
     }
-    res.send(rows);
+    res.json(rows);
   });
 
   db.close();
 });
 
-//put
 server.put("/cars/:id", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
   const { brand, year, regnr, color } = req.body;
@@ -52,20 +46,44 @@ server.put("/cars/:id", (req, res) => {
     }
 
     db.close();
-    res.send({
-      message: "Car updated successfully",
+    res.json({
+      message: "Bilen har uppdaterats med framgång",
       updatedCar: { id, brand, year, regnr, color },
     });
   });
 });
-//post
+
+server.get("/cars/:id", (req, res) => {
+  const db = new sqlite3.Database("./cars.db");
+  const { id } = req.params;
+
+  const sql = "SELECT * FROM cars WHERE id = ?";
+
+  db.get(sql, [id], (err, row) => {
+    if (err) {
+      db.close();
+      return res
+        .status(500)
+        .send({ error: "Database error", details: err.message });
+    }
+    if (!row) {
+      db.close();
+      return res.status(404).send({ error: "Car not found" });
+    }
+
+    db.close();
+    res.json(row);
+  });
+});
+
 server.post("/cars", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
-
   const { brand, year, regnr, color } = req.body;
 
+  console.log("POST request body:", req.body); // Debugging
+
   if (!brand || !year || !regnr || !color) {
-    return res.status(400).send({ error: "Alla fält måste fyllas" });
+    return res.status(400).send({ error: "Alla fält måste fyllas i" });
   }
 
   const sql =
@@ -78,7 +96,7 @@ server.post("/cars", (req, res) => {
         .send({ error: "Database error", details: err.message });
     }
 
-    res.status(201).send({
+    res.status(201).json({
       message: "Woohoo bilen har lagts till!",
       car: { id: this.lastID, brand, year, regnr, color },
     });
@@ -90,6 +108,7 @@ server.post("/cars", (req, res) => {
 server.delete("/cars/:id", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
   const { id } = req.params;
+
   if (!id) {
     return res
       .status(500)
@@ -100,6 +119,7 @@ server.delete("/cars/:id", (req, res) => {
 
   db.run(sql, [id], function (err) {
     if (err) {
+      db.close();
       return res
         .status(500)
         .send({ error: "Database error", details: err.message });
@@ -110,14 +130,13 @@ server.delete("/cars/:id", (req, res) => {
         .send({ error: "Resurs med angivet ID hittades inte." });
     }
 
-    res.status(200).send({
+    db.close();
+    res.status(200).json({
       message: `Resurs med ID ${id} har tagits bort.`,
     });
   });
-
-  db.close();
 });
 
-server.listen(3000, () =>
-  console.log("Running server on http://localhost:3000")
-);
+server.listen(3000, () => {
+  console.log("Running server on http://localhost:3000");
+});
