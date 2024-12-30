@@ -6,13 +6,14 @@ const serverUrl = "http://localhost:3000/cars";
 
 // Definierar en färgkarta för bilens färger
 const colorMap = {
-  red: "#8c2b2b",
+  red: "#D10A00",
   black: "#2c2c2c",
-  green: "#2d673",
-  orange: "#935814",
-  yellow: "#d5a925",
-  white: "#fffcf5",
-  pink: "#df6eb6",
+  green: "#1F5833",
+  orange: "#EC6600",
+  yellow: "#FFC800",
+  white: "#F0ECE4",
+  pink: "#E66EB2",
+  blue: "#005EBD",
 };
 
 // Funktion för att hämta bilinformation från servern
