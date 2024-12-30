@@ -1,109 +1,122 @@
 const formHtml = document.getElementById("carForm");
-
-// URL till backend-servern för att hämta användardata
 const serverUrl = "http://localhost:3000/cars";
 
-// Hämta data från servern med fetch
+// Hämta data från servern
 async function fetchcars() {
-  const response = await fetch(serverUrl);
-  const cars = await response.json();
+  try {
+    const response = await fetch(serverUrl);
+    const cars = await response.json();
 
-  //listan för bilar
-  const ul = document.createElement("ul");
+    const divContainer = document.getElementById("car-list");
+    divContainer.innerHTML = "";
 
-  cars.forEach((car) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-   <li class="d-flex justify-content-center align-items-center text-center mb-3 rounded-5" style="background-color:${modifiedColor} data-id=${car.id}">
-<div>
-<h2>
-${cars.brand}
-</h2>
-<p>${cars.year}-${cars.color}- ${cars.regnr} </p>
+    cars.forEach((car) => {
+      const card = document.createElement("div");
+      card.classList.add(
+        "card",
+        "p-3",
+        "rounded-2",
+        "d-flex",
+        "justify-content-between",
+        "align-items-center"
+      );
 
-</div>
+      card.style.backgroundColor = car.color || "#f5ede5";
+      card.dataset.id = car.id;
+      const fontColor = car.color === "#5b5b5b" ? "#808080" : "#000";
+      card.style.color = fontColor;
 
-   <div>
-   <button class=" rounded-5 bg-blue text-lg edit-btn">Change</button>
-   <button class=" rounded-5 bg-black text-lg del-btn">Delete</button>
-   </div>
-     </div>
-    
-    `;
-  });
+      card.innerHTML = `
+        <div>
+          <h1>${car.brand}</h1>
+          <p>${car.year} - ${car.regnr}</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-danger btn-sm edit-btn">Change</button>
+          <button class="btn btn-danger btn-sm del-btn">Delete</button>
+        </div>
+      `;
+
+      divContainer.appendChild(card);
+    });
+  } catch (error) {
+    showMessage("Error fetching cars", "danger");
+  }
 }
 
-// Hämtar referenser från DOM-trädet
-const carBrand = document.getElementById("brand");
-const carYear = document - getElementById("year");
-const carColor = document.getElementById("color");
-const carRegnr = document.getElementById("regnr");
-const carID = document.getElementById("carId");
+function showMessage(message, type = "success") {
+  const messageBox = document.getElementById("messageBox");
+  messageBox.textContent = message;
+  messageBox.className = `alert alert-${type}`;
+  messageBox.classList.remove("d-none");
 
-// funktion för uppdatering av bilar
-const carForm = addEventListener("submit", async (e) => {
+  setTimeout(() => {
+    messageBox.classList.add("d-none");
+  }, 3000);
+}
+
+document.getElementById("carForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const car = {
-    brand: document.getElementById("brand").value,
-    year: document.getElementById("year").value,
-    color: document.getElementById("color").value,
-    regnr: document.getElementById("regnr").value,
+    brand: document.getElementById("brand").value.trim(),
+    year: document.getElementById("year").value.trim(),
+    color: document.getElementById("color").value.trim(),
+    regnr: document.getElementById("regnr").value.trim(),
   };
 
-  const carID = document.getElementById("carId").value;
-
+  const carId = document.getElementById("carId").value;
   try {
-    const response = await fetch(carId ? `${serverUrl}/${carID}` : serverUrl, {
+    const response = await fetch(carId ? `${serverUrl}/${carId}` : serverUrl, {
       method: carId ? "PUT" : "POST",
-      headers: { "Content-Type": "application/Json" },
-      body:JSON.stringify({brand,year,regnr,color})
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(car),
     });
 
+    const result = await response.json();
+    showMessage(result.message);
+    document.getElementById("carForm").reset();
+    document.getElementById("carId").value = "";
+    fetchcars();
   } catch (error) {
-    showMessage("Error saving car");
+    showMessage("Error saving car", "danger");
   }
-
-function showMessage(message,Type= "success"){
-    messageBox.textContet= message;
-    messageBox.className= `Alert alert-$(type)`;
-    messageBox.classList.remove("d-none")
-    setTimeout(()=> messageBox.classList.add("d-none"),3000);
-
-}
-
- });
-
-//Funktion för att ta bort 
-li.addEventListener("click", async(e)=> {
-    const target= e.target;
-    const carId= target.closest("li").dataset.id;
-
- });
-if (target.classList.container("del-btn")){
-    const response = await fetch(`${serverUrl}/carId`)
-    const car = await response.json();
-    document.getElementById("carId").value= car.id;
-    document.getElementById("brand").value = car.brand;
-    document.getElementById("year").value = car.year;
-    document.getElementById("color").value = car.color;
-    else if(target.classList.container("delete-btn")){
-         try {
-    const response = await fetch(carId ? `${serverUrl}/${carID}` : serverUrl, { method:"DELETE"});
-    const result = await response.json;
-
-   
-showMessage( result, message);
-fetchcars();
-         }
-catch(error){
-    showMessage("Error deleting car")
-}
- 
-
-
-
-   
- 
-
-
 });
+
+document.addEventListener("click", async (e) => {
+  const target = e.target;
+
+  if (target.classList.contains("edit-btn")) {
+    const card = target.closest(".card");
+    const carId = card.dataset.id;
+
+    try {
+      const response = await fetch(`${serverUrl}/${carId}`);
+      const car = await response.json();
+
+      document.getElementById("carId").value = car.id;
+      document.getElementById("brand").value = car.brand;
+      document.getElementById("year").value = car.year;
+      document.getElementById("color").value = car.color;
+      document.getElementById("regnr").value = car.regnr;
+    } catch (error) {
+      showMessage("Error fetching car details", "danger");
+    }
+  } else if (target.classList.contains("del-btn")) {
+    const card = target.closest(".card");
+    const carId = card.dataset.id;
+
+    try {
+      const response = await fetch(`${serverUrl}/${carId}`, {
+        method: "DELETE",
+      });
+      const result = await response.json();
+      showMessage(result.message);
+      fetchcars();
+    } catch (error) {
+      showMessage("Error deleting car", "danger");
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", fetchcars);
