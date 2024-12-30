@@ -1,40 +1,61 @@
 const formHtml = document.getElementById("carForm");
 const serverUrl = "http://localhost:3000/cars";
 
+const colorMap = {
+  red: "#8c2b2b",
+  black: "#2c2c2c",
+  green: "#2d673",
+  orange: "#935814",
+  yellow: "#d5a925",
+  white: "#fffcf5",
+  pink: "#df6eb6",
+};
+
 // Hämta data från servern
 async function fetchcars() {
   try {
     const response = await fetch(serverUrl);
     const cars = await response.json();
 
-    const divContainer = document.getElementById("car-list");
+    const divContainer = document.getElementById("carList");
     divContainer.innerHTML = "";
+    divContainer.className =
+      " d-flex flex-wrap gap-3 container-fluid flex-basis-3";
 
     cars.forEach((car) => {
       const card = document.createElement("div");
+      (card.style.flex = "flex-basis: calc(50% - 1rem)"),
+        "flex-basis: calc(60% - 1rem)",
+        "flex-basis: calc(80% - 1rem)";
       card.classList.add(
         "card",
         "p-3",
         "rounded-2",
         "d-flex",
         "justify-content-between",
-        "align-items-center"
+        "align-items-center",
+        "w-50"
       );
+      const userColor = car.colorMap;
 
       card.style.backgroundColor = car.color || "#f5ede5";
       card.dataset.id = car.id;
       const fontColor = car.color === "#5b5b5b" ? "#808080" : "#000";
       card.style.color = fontColor;
-
       card.innerHTML = `
-        <div>
-          <h1>${car.brand}</h1>
-          <p>${car.year} - ${car.regnr}</p>
+        <div class="card-body text-center  ">
+        <div class="row">
+          <h1 class="card-title text-light">${car.brand}</h1>
+          <p class="card-text ">${car.year} - ${car.regnr}</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class=" justify-content-center d-flex align-items-center gap-2 justify-content-end">
           <button class="btn btn-danger btn-sm edit-btn">Change</button>
           <button class="btn btn-danger btn-sm del-btn">Delete</button>
         </div>
+         </div>
+       
+
+
       `;
 
       divContainer.appendChild(card);
