@@ -5,16 +5,6 @@ const formHtml = document.getElementById("carForm");
 const serverUrl = "http://localhost:3000/cars";
 
 // Definierar en färgkarta för bilens färger
-/* const colorMap = {
-  red: "#C02B1B",
-  black: "#2C2C2C",
-  green: "#1F5833",
-  orange: "#EC6600",
-  yellow: "#FFC800",
-  white: "#F0ECE4",
-  pink: "#E66EB2",
-  blue: "#005EBD",
-}; */
 
 const colorMap = {
   "#C02B1B": "red",
@@ -37,7 +27,6 @@ async function fetchcars() {
     // Hämtar bildata från servern
     const response = await fetch(serverUrl);
     const cars = await response.json();
-    showMessage("start");
 
     // Hämtar div-container för att visa bilarna
     const divContainer = document.getElementById("carList");
