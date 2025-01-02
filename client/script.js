@@ -37,6 +37,7 @@ async function fetchcars() {
     // Hämtar bildata från servern
     const response = await fetch(serverUrl);
     const cars = await response.json();
+    showMessage("start");
 
     // Hämtar div-container för att visa bilarna
     const divContainer = document.getElementById("carList");
@@ -127,9 +128,9 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
     regnr: document.getElementById("regnr").value.trim(),
   };
 
-   // Konvertera hexkoden till färgnamn
-   const colorName = colorMap[car.color] || car.color; // Använd hexkoden för att få färgnamnet
-   car.color = colorName; // Sätt färgnamnet i bilobjektet
+  // Konvertera hexkoden till färgnamn
+  const colorName = colorMap[car.color] || car.color; // Använd hexkoden för att få färgnamnet
+  car.color = colorName; // Sätt färgnamnet i bilobjektet
 
   const carId = document.getElementById("carId").value;
 
@@ -194,10 +195,8 @@ document.addEventListener("click", async (e) => {
       });
 
       const result = await response.json();
-
       // Visar ett framgångsmeddelande efter radering
       showMessage(result.message);
-
       // Hämtar uppdaterad bilinformation
       fetchcars();
     } catch (error) {

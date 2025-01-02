@@ -12,72 +12,76 @@
     <link rel="stylesheet" href="https://use.typekit.net/nhm1uap.css" />
   </head>
   <body>
-    <div class="container mt-5 p-4 rounded-5">
-      <h1 class="text-center mb-4">Cars Management</h1>
+    <main class="p-3">
+      <section class="p-3">
+        <div id="messageBox" class="alert d-none"></div>
+        <div class="container mt-5 p-4 rounded-5">
+          <h1 class="text-center mb-4">Cars Management</h1>
 
-      <!-- Form -->
-      <form id="carForm" class="mb-5">
-        <input type="hidden" id="carId" />
-        <div class="row mb-3">
-          <div class="col">
-            <input
-              type="text"
-              id="brand"
-              class="form-control"
-              placeholder="Brand"
-              required
-            />
-          </div>
-          <div class="col">
-            <input
-              type="number"
-              id="year"
-              class="form-control"
-              placeholder="Year"
-              required
-            />
+          <!-- Form -->
+          <form id="carForm" class="mb-5">
+            <input type="hidden" id="carId" />
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  type="text"
+                  id="brand"
+                  class="form-control"
+                  placeholder="Brand"
+                  required
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="number"
+                  id="year"
+                  class="form-control"
+                  placeholder="Year"
+                  required
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  type="text"
+                  id="regnr"
+                  class="form-control"
+                  placeholder="Registration Number"
+                  required
+                />
+              </div>
+              <div class="col">
+                <select id="color" class="form-control" required>
+                  <option value="" disabled selected>Select color</option>
+                  <option value="#005EBD">Blue</option>
+                  <option value="#C02B1B">Red</option>
+                  <option value="#1F5833">Green</option>
+                  <option value="#2C2C2C">Black</option>
+                  <option value="#A1A1A1">Grey</option>
+                  <option value="#EC6600">Orange</option>
+                  <option value="#E66EB2">Pink</option>
+                  <option value="#FFC800">Yellow</option>
+                </select>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end gap-4">
+              <button type="submit" class="btn btn-dark w-50">Save car</button>
+              <button type="submit" class="btn btn-dark w-50">
+                Erase car details
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="p-3">
+        <div class="car-list" class="p-3 m-3 row g-3" id="carList">
+          <div class="col-md-3">
+            <div class="card shadow-sm p-3 rounded"></div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col">
-            <input
-              type="text"
-              id="regnr"
-              class="form-control"
-              placeholder="Registration Number"
-              required
-            />
-          </div>
-          <div class="col">
-            <select id="color" class="form-control" required>
-              <option value="" disabled selected>Select color</option>
-              <option value="#005EBD">Blue</option>
-              <option value="#C02B1B">Red</option>
-              <option value="#1F5833">Green</option>
-              <option value="#2C2C2C">Black</option>
-              <option value="#A1A1A1">Grey</option>
-              <option value="#EC6600">Orange</option>
-              <option value="#E66EB2">Pink</option>
-              <option value="#FFC800">Yellow</option>
-            </select>
-          </div>
-        </div>
-        <div class="d-flex justify-content-end gap-4">
-          <button type="submit" class="btn btn-dark w-50">Save car</button>
-          <button type="submit" class="btn btn-dark w-50">
-            Erase car details
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="car-list" class="row g-3" id="carList">
-      <div class="col-md-3">
-        <div class="card shadow-sm p-3 rounded"></div>
-      </div>
-    </div>
-
-    <div id="messageBox" class="alert d-none"></div>
-
-    <script src="script.js"></script>
+      </section>
+      <script src="script.js"></script>
+    </main>
   </body>
 </html>
