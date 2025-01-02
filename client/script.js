@@ -5,16 +5,31 @@ const formHtml = document.getElementById("carForm");
 const serverUrl = "http://localhost:3000/cars";
 
 // Definierar en färgkarta för bilens färger
-const colorMap = {
-  red: "#D10A00",
-  black: "#2c2c2c",
+/* const colorMap = {
+  red: "#C02B1B",
+  black: "#2C2C2C",
   green: "#1F5833",
   orange: "#EC6600",
   yellow: "#FFC800",
   white: "#F0ECE4",
   pink: "#E66EB2",
   blue: "#005EBD",
+}; */
+
+const colorMap = {
+  "#C02B1B": "red",
+  "#2C2C2C": "black",
+  "#1F5833": "green",
+  "#EC6600": "orange",
+  "#FFC800": "yellow",
+  "#A1A1A1": "grey",
+  "#E66EB2": "pink",
+  "#005EBD": "blue",
 };
+
+const reverseColorMap = Object.fromEntries(
+  Object.entries(colorMap).map(([hex, name]) => [name, hex])
+);
 
 // Funktion för att hämta bilinformation från servern
 async function fetchcars() {
@@ -40,7 +55,7 @@ async function fetchcars() {
       card.classList.add(
         "card",
         "p-3",
-        "rounded-2",
+        "rounded-5",
         "d-flex",
         "justify-content-between",
         "align-items-center",
@@ -51,7 +66,10 @@ async function fetchcars() {
       );
 
       // Sätter bakgrundsfärg på kortet baserat på bilens färg
-      card.style.backgroundColor = car.color || "#f5ede5";
+      const chosenColor = reverseColorMap[car.color] || car.color;
+      card.style.backgroundColor = chosenColor;
+
+      /* card.style.backgroundColor = car.color || "#f5ede5"; */
 
       // Lagrar bilens ID som en data-attribut på kortet
       card.dataset.id = car.id;
@@ -61,13 +79,13 @@ async function fetchcars() {
       card.style.color = fontColor;
 
       // Sätter in HTML-innehållet i kortet, inklusive bilens detaljer och handlingsknappar
-      card.innerHTML = `
-        <div class="card-body text-center">
+      card.innerHTML = ` 
+        <div class="card-body text-center rounded custom-rounded" style="background-color: ${chosenColor}">
           <h5 class="card-title text-light">${car.brand}</h5>
           <p class="card-text text-light">${car.year} - ${car.regnr}</p>
           <div class="d-flex justify-content-center gap-2">
-            <button class="btn btn-danger btn-sm edit-btn">Change</button>
-            <button class="btn btn-danger btn-sm del-btn">Delete</button>
+            <button class="btn btn-outline-light rounded-pill btn-sm edit-btn">Change</button>
+            <button class="btn btn-outline-light rounded-pill btn-sm del-btn">Delete</button>
           </div>
         </div>
       `;
@@ -105,9 +123,13 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
   const car = {
     brand: document.getElementById("brand").value.trim(),
     year: document.getElementById("year").value.trim(),
-    color: document.getElementById("color").value.trim(),
+    color: document.getElementById("color").value.trim(), // färgen hämtas här
     regnr: document.getElementById("regnr").value.trim(),
   };
+
+   // Konvertera hexkoden till färgnamn
+   const colorName = colorMap[car.color] || car.color; // Använd hexkoden för att få färgnamnet
+   car.color = colorName; // Sätt färgnamnet i bilobjektet
 
   const carId = document.getElementById("carId").value;
 

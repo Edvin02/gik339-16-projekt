@@ -1,0 +1,43 @@
+body {
+    background-color: #e4e3e3;
+}
+
+.container {
+    background-color:#A1A1A1;
+}
+h1 {
+    font-family: "abril-fatface", serif;
+    font-style: italic;
+    font-size: 3rem;
+}
+
+.card-title {
+    font-family: "abril-fatface", serif;
+    letter-spacing: .05rem;
+}
+
+.card-text {
+    font-family: futura-pt, sans-serif;
+}
+
+.edit-btn {
+    font-family: futura-pt, sans-serif;
+}
+
+.del-btn {
+    font-family: futura-pt, sans-serif;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: futura-pt, sans-serif; /* Ändra till önskat typsnitt */
+}
+
+/* Stylar placeholder-texten för select-element */
+select {
+  font-family: futura-pt, sans-serif; /* Ändra till önskat typsnitt */
+}
+
+.btn {
+    font-family: futura-pt, sans-serif;
+}

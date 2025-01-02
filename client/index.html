@@ -8,14 +8,15 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/nhm1uap.css" />
   </head>
   <body>
-    <div class="container mt-5">
+    <div class="container mt-5 p-4 rounded-5">
       <h1 class="text-center mb-4">Cars Management</h1>
 
       <!-- Form -->
-      <form id="carForm" class="mb-4">
+      <form id="carForm" class="mb-5">
         <input type="hidden" id="carId" />
         <div class="row mb-3">
           <div class="col">
@@ -50,20 +51,20 @@
           <div class="col">
             <select id="color" class="form-control" required>
               <option value="" disabled selected>Select color</option>
-              <option value="#3664ba">Blue</option>
-              <option value="#8c2b2b">Red</option>
-              <option value="#2d673c">Green</option>
-              <option value="#2c2c2c">Black</option>
-              <option value="#fffcf5">White</option>
-              <option value="#935814">Orange</option>
-              <option value="#df6eb6">Pink</option>
-              <option value="#d5a925">Yellow</option>
+              <option value="#005EBD">Blue</option>
+              <option value="#C02B1B">Red</option>
+              <option value="#1F5833">Green</option>
+              <option value="#2C2C2C">Black</option>
+              <option value="#A1A1A1">Grey</option>
+              <option value="#EC6600">Orange</option>
+              <option value="#E66EB2">Pink</option>
+              <option value="#FFC800">Yellow</option>
             </select>
           </div>
         </div>
-        <div class="d-flex gap-2">
-          <button type="submit" class="btn btn-primary w-50">Save car</button>
-          <button type="submit" class="btn btn-primary w-50">
+        <div class="d-flex justify-content-end gap-4">
+          <button type="submit" class="btn btn-dark w-50">Save car</button>
+          <button type="submit" class="btn btn-dark w-50">
             Erase car details
           </button>
         </div>
