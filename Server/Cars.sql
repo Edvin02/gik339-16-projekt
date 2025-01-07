@@ -10,5 +10,7 @@ CREATE TABLE IF NOT EXISTS cars (
 INSERT INTO cars (id, brand, year, regnr, color) VALUES (1, 'Ferarri', 2020, 'ABC123', 'red');
 INSERT INTO cars (id, brand, year, regnr, color) VALUES (2, 'Volvo', 2015, 'AHL876', 'black');
 INSERT INTO cars (id, brand, year, regnr, color) VALUES (3, 'Tesla', 2021, 'XYZ123', 'blue');
+SELECT COUNT(*) as count FROM cars WHERE regnr = 'ABC123'
+
 
 select * from cars;

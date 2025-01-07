@@ -80,29 +80,47 @@ server.post("/cars", (req, res) => {
   const db = new sqlite3.Database("./cars.db");
   const { brand, year, regnr, color } = req.body;
 
-  console.log("POST request body:", req.body); // Debugging
-
   if (!brand || !year || !regnr || !color) {
     return res.status(400).send({ error: "Alla fält måste fyllas i" });
   }
 
-  const sql =
-    "INSERT INTO cars (brand, year, regnr, color) VALUES (?, ?, ?, ?)";
-
-  db.run(sql, [brand, year, regnr, color], function (err) {
+  // Check if a car with the same registration number exists
+  const checkSql = "SELECT COUNT(*) as count FROM cars WHERE regnr = ?";
+  db.get(checkSql, [regnr], (err, row) => {
     if (err) {
+      db.close();
+      console.error("Database error:", err.message); // Log the error
       return res
         .status(500)
         .send({ error: "Database error", details: err.message });
     }
 
-    res.status(201).json({
-      message: "Woohoo bilen har lagts till!",
-      car: { id: this.lastID, brand, year, regnr, color },
+    if (row.count > 0) {
+      db.close();
+      return res
+        .status(400)
+        .send({ error: "En bil med samma registreringsnummer finns redan." });
+    }
+
+    const insertSql =
+      "INSERT INTO cars (brand, year, regnr, color) VALUES (?, ?, ?, ?)";
+    db.run(insertSql, [brand, year, regnr, color], function (err) {
+      if (err) {
+        db.close();
+        console.error("Database error:", err.message);
+        return res
+          .status(500)
+          .send({ error: "Database error", details: err.message });
+      }
+
+      res.status(201).json({
+        message: "Woohoo bilen har lagts till!",
+        car: { id: this.lastID, brand, year, regnr, color },
+      });
+
+      db.close();
     });
   });
-
-  db.close();
 });
 
 server.delete("/cars/:id", (req, res) => {

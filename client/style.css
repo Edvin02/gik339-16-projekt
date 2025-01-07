@@ -3,8 +3,9 @@ body {
 }
 
 .container {
-    background-color:#A1A1A1;
+    background-color: #A1A1A1;
 }
+
 h1 {
     font-family: "abril-fatface", serif;
     font-style: italic;
@@ -30,12 +31,14 @@ h1 {
 
 input::placeholder,
 textarea::placeholder {
-  font-family: futura-pt, sans-serif; /* Ändra till önskat typsnitt */
+    font-family: futura-pt, sans-serif;
+    /* Ändra till önskat typsnitt */
 }
 
 /* Stylar placeholder-texten för select-element */
 select {
-  font-family: futura-pt, sans-serif; /* Ändra till önskat typsnitt */
+    font-family: futura-pt, sans-serif;
+    /* Ändra till önskat typsnitt */
 }
 
 .btn {

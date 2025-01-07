@@ -132,10 +132,6 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
     regnr: document.getElementById("regnr").value.trim(),
   };
 
-  // Konvertera hexkoden till färgnamn
-  const colorName = colorMap[car.color] || car.color; // Använd hexkoden för att få färgnamnet
-  car.color = colorName; // Sätt färgnamnet i bilobjektet
-
   const carId = document.getElementById("carId").value;
 
   try {
@@ -145,6 +141,19 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(car),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.error && errorData.error.includes("registreringsnummer")) {
+        showMessage(
+          "Ett fordon med detta registreringsnummer finns redan.",
+          "danger"
+        );
+      } else {
+        showMessage(errorData.error || "Något gick fel", "danger");
+      }
+      return;
+    }
 
     const result = await response.json();
 
