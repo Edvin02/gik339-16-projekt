@@ -85,9 +85,24 @@ async function fetchcars() {
     });
   } catch (error) {
     // Visar ett felmeddelande om det misslyckas att hämta bilar
-    showMessage("Error fetching cars", "danger");
+    showMessage("Fel vid hämtning av bilar", "danger");
   }
 }
+
+// Add an event listener for the "Erase car details" button
+document
+  .querySelector(".btn-dark.w-50[type='button']")
+  .addEventListener("click", () => {
+    // Clear all input fields in the form
+    document.getElementById("carId").value = "";
+    document.getElementById("brand").value = "";
+    document.getElementById("year").value = "";
+    document.getElementById("color").value = "";
+    document.getElementById("regnr").value = "";
+
+    // Show a message confirming the reset
+    showMessage("Bilsinformation har rensats", "info");
+  });
 
 // Funktion för att visa ett meddelande (framgång eller fel) till användaren
 function showMessage(message, type = "success") {
@@ -144,7 +159,7 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
     fetchcars();
   } catch (error) {
     // Visar ett felmeddelande om operationen misslyckas
-    showMessage("Error saving car", "danger");
+    showMessage("Fel vid sparande av bil", "danger");
   }
 });
 
@@ -170,7 +185,7 @@ document.addEventListener("click", async (e) => {
       document.getElementById("regnr").value = car.regnr;
     } catch (error) {
       // Visar ett felmeddelande om det misslyckas att hämta bilens detaljer
-      showMessage("Error fetching car details", "danger");
+      showMessage("Fel vid hämtning av bildetaljer", "danger");
     }
   } else if (target.classList.contains("del-btn")) {
     // Hanterar klick på "Delete"-knappen (radera bil)
@@ -190,7 +205,7 @@ document.addEventListener("click", async (e) => {
       fetchcars();
     } catch (error) {
       // Visar ett felmeddelande om det misslyckas att radera bilen
-      showMessage("Error deleting car", "danger");
+      showMessage("Fel vid borttagning av bil", "danger");
     }
   }
 });

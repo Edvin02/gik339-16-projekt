@@ -132,7 +132,7 @@ server.delete("/cars/:id", (req, res) => {
 
     db.close();
     res.status(200).json({
-      message: `Resurs med ID ${id} har tagits bort.`,
+      message: ` ${brand} har tagits bort.`,
     });
   });
 });
