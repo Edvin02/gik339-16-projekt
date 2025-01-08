@@ -16,12 +16,16 @@
       <section class="p-3">
         <div id="messageBox" class="alert d-none"></div>
         <div class="container mt-5 p-4 rounded-5">
-          <h1 class="text-center mb-4">Cars Management</h1>
+          <h1 class="text-center mb-4 display-6 display-md-4 display-lg-3">
+            Cars Management
+          </h1>
 
           <!-- Form -->
           <form id="carForm" class="mb-5">
             <input type="hidden" id="carId" />
-            <div class="row mb-3">
+
+            <!-- Dynamiskt responsiv layout -->
+            <div class="row row-cols-1 row-cols-sm-2 g-3">
               <div class="col">
                 <input
                   type="text"
@@ -40,8 +44,6 @@
                   required
                 />
               </div>
-            </div>
-            <div class="row mb-3">
               <div class="col">
                 <input
                   type="text"
@@ -65,7 +67,9 @@
                 </select>
               </div>
             </div>
-            <div class="d-flex justify-content-end gap-4">
+
+            <!-- Actions -->
+            <div class="d-flex justify-content-end gap-4 mt-4">
               <button type="submit" class="btn btn-dark w-50">Save car</button>
               <button type="button" class="btn btn-dark w-50">
                 Erase car details
