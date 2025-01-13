@@ -1,3 +1,5 @@
+//Alva----->>>
+
 // Hämtar formulärets HTML-element via dess ID
 const formHtml = document.getElementById("carForm");
 
@@ -172,6 +174,7 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
   }
 });
 
+// Elange --->
 // Funktion för att hantera ändrings- och raderingsåtgärder för bilar
 document.addEventListener("click", async (e) => {
   const target = e.target;
