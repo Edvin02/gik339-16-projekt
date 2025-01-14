@@ -175,52 +175,54 @@ document.getElementById("carForm").addEventListener("submit", async (e) => {
 });
 
 // Elange --->
-// Funktion för att hantera ändrings- och raderingsåtgärder för bilar
-document.addEventListener("click", async (e) => {
-  const target = e.target;
 
-  // Hanterar klick på "Change"-knappen (redigera bil)
+// Lägger till en händelselyssnare för klickhändelser på hela dokumentet
+document.addEventListener("click", async (e) => {
+  const target = e.target; // Hämtar elementet som användaren klickade på
+
+  // Kontrollera om det klickade elementet är en knapp för redigering (med klassen "edit-btn")
   if (target.classList.contains("edit-btn")) {
-    const card = target.closest(".card");
-    const carId = card.dataset.id;
+    const card = target.closest(".card"); // Hittar det närmaste kortelementet (bilkort) där knappen klickades
+    const carId = card.dataset.id; // Hämtar bilens ID från dataset-attributet i kortet
 
     try {
-      // Hämtar detaljer för bilen att redigera
+      // Skickar en GET-begäran till servern för att hämta detaljer om den valda bilen
       const response = await fetch(`${serverUrl}/${carId}`);
-      const car = await response.json();
+      const car = await response.json(); // Omvandlar svaret från servern till JSON-format
 
-      // Fyller formuläret med bilens detaljer för redigering
+      // Fyller i redigeringsformuläret med bilens nuvarande detaljer
       document.getElementById("carId").value = car.id;
       document.getElementById("brand").value = car.brand;
       document.getElementById("year").value = car.year;
       document.getElementById("color").value = car.color;
       document.getElementById("regnr").value = car.regnr;
     } catch (error) {
-      // Visar ett felmeddelande om det misslyckas att hämta bilens detaljer
+      // Visar ett felmeddelande om något går fel vid hämtning av bildetaljer
       showMessage("Fel vid hämtning av bildetaljer", "danger");
     }
-  } else if (target.classList.contains("del-btn")) {
-    // Hanterar klick på "Delete"-knappen (radera bil)
-    const card = target.closest(".card");
-    const carId = card.dataset.id;
+  }
+  // Kontrollera om det klickade elementet är en knapp för borttagning (med klassen "del-btn")
+  else if (target.classList.contains("del-btn")) {
+    const card = target.closest(".card"); // Hittar det närmaste kortelementet (bilkort) där knappen klickades
+    const carId = card.dataset.id; // Hämtar bilens ID från dataset-attributet i kortet
 
     try {
-      // Skickar en begäran för att radera bilen
+      // Skickar en DELETE-begäran till servern för att ta bort bilen med det angivna ID:t
       const response = await fetch(`${serverUrl}/${carId}`, {
-        method: "DELETE",
+        method: "DELETE", // Anger att det är en borttagningsoperation
       });
 
-      const result = await response.json();
-      // Visar ett framgångsmeddelande efter radering
+      const result = await response.json(); // Omvandlar svaret från servern till JSON-format
+      // Visar ett meddelande om att bilen har tagits bort framgångsrikt
       showMessage(result.message);
-      // Hämtar uppdaterad bilinformation
+      // Uppdaterar bilinformationen genom att hämta den på nytt från servern
       fetchcars();
     } catch (error) {
-      // Visar ett felmeddelande om det misslyckas att radera bilen
+      // Visar ett felmeddelande om något går fel vid borttagning av bilen
       showMessage("Fel vid borttagning av bil", "danger");
     }
   }
 });
 
-// Hämtar bilar när sidan har laddats
-document.addEventListener("DOMContentLoaded", fetchcars);
+// Lägger till en händelselyssnare som körs när sidan är färdigladdad
+document.addEventListener("DOMContentLoaded", fetchcars); // Hämtar och visar alla bilar från servern när sidan laddas
