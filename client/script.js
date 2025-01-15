@@ -61,8 +61,6 @@ async function fetchcars() {
       const chosenColor = reverseColorMap[car.color] || car.color;
       card.style.backgroundColor = chosenColor;
 
-      /* card.style.backgroundColor = car.color || "#f5ede5"; */
-
       // Lagrar bilens ID som en data-attribut på kortet
       card.dataset.id = car.id;
 
@@ -106,6 +104,7 @@ document
     showMessage("Bilsinformation har rensats", "info");
   });
 
+// Klara---->
 // Funktion för att visa ett meddelande (framgång eller fel) till användaren
 function showMessage(message, type = "success") {
   console.log("showMessage called:", message); // Loggar meddelandet för felsökning
